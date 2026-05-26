@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สภานักเรียน — โรงเรียนสาธิต</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #0ea5e9;
+    --sky-dark: #0284c7;
+    --sky-deep: #0369a1;
+    --sky-light: #e0f2fe;
+    --sky-pale: #f0f9ff;
+    --white: #ffffff;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+    --gold: #f59e0b;
+    --gold-light: #fef3c7;
+    --green: #10b981;
+    --green-light: #d1fae5;
+    --pink: #ec4899;
+    --pink-light: #fce7f3;
+    --purple: #8b5cf6;
+    --purple-light: #ede9fe;
+    --coral: #f97316;
+    --coral-light: #ffedd5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--gray-900);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--sky);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.1s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid rgba(14,165,233,0.5);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transition: transform 0.25s ease, width 0.2s, height 0.2s, border-color 0.2s;
+  }
+  body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring {
+    width: 54px; height: 54px;
+    border-color: var(--sky);
+  }
+
+  /* BG PARTICLES */
+  #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .particle {
+    position: absolute; border-radius: 50%;
+    background: rgba(14,165,233,0.15);
+    animation: floatParticle linear infinite;
+  }
+  @keyframes floatParticle {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(14,165,233,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,165,233,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* NAVBAR */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 2rem;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(15,23,42,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(14,165,233,0.15);
+  }
+  .nav-logo {
+    font-family: 'Prompt', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--white);
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--sky), var(--sky-deep));
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .nav-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    padding: 6px 16px; border-radius: 8px;
+    font-size: 14px; color: var(--gray-400);
+    text-decoration: none; transition: all 0.2s;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer; border: none; background: none;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--white); background: rgba(14,165,233,0.12); }
+  .nav-link.active { color: var(--sky); }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+
+  /* HERO */
+  #hero {
+    min-height: 80vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 7rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(14,165,233,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(14,165,233,0.1);
+    border: 1px solid rgba(14,165,233,0.3);
+    border-radius: 999px; padding: 6px 18px;
+    font-size: 13px; color: var(--sky);
+    margin-bottom: 1.5rem;
+    animation: fadeSlideDown 0.6s ease both;
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sky);
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.5);} }
+  @keyframes fadeSlideDown { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes fadeSlideUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);} }
+
+  .hero-title {
+    font-family: 'Prompt', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideDown 0.7s 0.1s ease both;
+  }
+  .hero-title span {
+    background: linear-gradient(135deg, var(--sky) 0%, #38bdf8 50%, #7dd3fc 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.2rem; color: var(--gray-400);
+    margin-bottom: 2.5rem; line-height: 1.7;
+    max-width: 600px; margin-left: auto; margin-right: auto;
+    animation: fadeSlideDown 0.7s 0.2s ease both;
+  }
+  .hero-cta {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    animation: fadeSlideDown 0.7s 0.3s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, var(--sky), var(--sky-deep));
+    color: var(--white); border: none; border-radius: 12px;
+    padding: 12px 28px; font-size: 15px; font-weight: 600;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 0 0 0 rgba(14,165,233,0);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(14,165,233,0.4);
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 12px; padding: 12px 28px;
+    font-size: 15px; font-family: 'Sarabun', sans-serif;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.25s;
+  }
+  .btn-secondary:hover { border-color: var(--sky); color: var(--sky); }
+
+  /* SECTION HEADER */
+  .section-header { text-align: center; margin-bottom: 3rem; }
+  .section-tag {
+    display: inline-block;
+    background: rgba(14,165,233,0.1);
+    border: 1px solid rgba(14,165,233,0.25);
+    border-radius: 999px; padding: 4px 16px;
+    font-size: 12px; color: var(--sky);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Prompt', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700; color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .section-desc { font-size: 15px; color: var(--gray-400); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+  /* TEAM SECTION (MEMBERS) */
+  #members {
+    padding: 6rem 2rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .member-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+    text-align: center;
+  }
+  .member-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+  }
+
+  .member-img-container {
+    width: 100%;
+    height: 240px;
+    background: #1e293b;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .member-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .member-card:hover .member-card-img {
+    transform: scale(1.08);
+  }
+
+  .member-avatar-placeholder {
+    font-size: 5rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+  }
+
+  .member-role-badge {
+    position: absolute; bottom: 12px; left: 12px;
+    padding: 4px 12px; border-radius: 8px;
+    font-size: 12px; font-weight: 600;
+    color: var(--white);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .member-body { padding: 1.25rem; }
+  .member-name {
+    font-family: 'Prompt', sans-serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--white); margin-bottom: 4px;
+  }
+  .member-class {
+    font-size: 13px; color: var(--gray-400);
+    margin-bottom: 0.75rem;
+  }
+  .member-quote {
+    font-size: 12px; color: var(--gray-400);
+    font-style: italic; line-height: 1.5;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 10px;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--gray-800);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px; padding: 2rem;
+    max-width: 550px; width: 100%;
+    position: relative;
+    animation: modalIn 0.4s cubic-bezier(.34,1.56,.64,1);
+    max-height: 90vh; overflow-y: auto;
+  }
+  @keyframes modalIn { from{ opacity:0; transform:scale(0.85) translateY(30px); } to{ opacity:1; transform:scale(1) translateY(0); } }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.08); border: none;
+    color: var(--gray-400); cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; z-index: 10;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+
+  .modal-profile-header {
+    display: flex; gap: 20px; align-items: center; margin-bottom: 1.5rem;
+  }
+  .modal-img-container {
+    width: 140px; height: 180px; border-radius: 16px;
+    overflow: hidden; background: var(--gray-900); flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-profile-img { width: 100%; height: 100%; object-fit: cover; }
+  .modal-profile-avatar-placeholder { font-size: 4rem; }
+
+  .modal-header-info { flex: 1; }
+  .modal-member-name {
+    font-family: 'Prompt', sans-serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--white); margin-bottom: 4px;
+  }
+  .modal-member-role {
+    display: inline-block; padding: 4px 12px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; color: var(--white);
+    margin-bottom: 8px;
+  }
+  .modal-member-sub { font-size: 14px; color: var(--gray-400); }
+
+  .modal-section { font-size: 12px; font-weight: 600; letter-spacing: 1px; color: var(--gray-400); text-transform: uppercase; margin-bottom: 8px; margin-top: 1.25rem; }
+  .modal-quote-box {
+    background: rgba(255,255,255,0.04); border-radius: 10px;
+    padding: 12px 16px; font-size: 14px; color: var(--gray-200);
+    font-style: italic; line-height: 1.6;
+  }
+  .modal-responsibility-list { display: flex; flex-direction: column; gap: 8px; }
+  .modal-responsibility-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: rgba(255,255,255,0.04); border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .modal-resp-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .modal-resp-text { font-size: 13px; color: var(--gray-200); line-height: 1.5; }
+
+  /* PETITION SECTION */
+  #petition {
+    padding: 6rem 2rem 8rem;
+    max-width: 700px; margin: 0 auto;
+  }
+  .petition-form {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 2.5rem;
+    position: relative; overflow: hidden;
+  }
+  .petition-form::before {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(14,165,233,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  label {
+    font-size: 13px; font-weight: 500; color: var(--gray-400);
+    letter-spacing: 0.5px;
+  }
+  input[type="text"], textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 12px 14px;
+    color: var(--white); font-family: 'Sarabun', sans-serif;
+    font-size: 14px; width: 100%;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--sky);
+    background: rgba(14,165,233,0.06);
+  }
+  textarea { resize: vertical; min-height: 150px; line-height: 1.6; }
+  input::placeholder, textarea::placeholder { color: var(--gray-500); }
+
+  /* File upload styling */
+  .file-upload-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100px;
+    border: 2px dashed rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .file-upload-wrapper:hover {
+    border-color: var(--sky);
+    background: rgba(14,165,233,0.03);
+  }
+  .file-upload-input {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    opacity: 0; cursor: pointer;
+  }
+  .file-upload-info { font-size: 13px; color: var(--gray-400); text-align: center; }
+  .file-preview {
+    margin-top: 10px; max-width: 100%; max-height: 150px;
+    border-radius: 8px; display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .char-count { font-size: 11px; color: var(--gray-400); text-align: right; margin-top: 4px; }
+  .submit-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--sky), var(--sky-deep));
+    border: none; border-radius: 12px;
+    color: var(--white); font-size: 16px; font-weight: 600;
+    font-family: 'Sarabun', sans-serif; cursor: pointer;
+    transition: all 0.3s; margin-top: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(14,165,233,0.4); }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { background: var(--gray-600); color: var(--gray-400); cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .success-msg {
+    display: none; text-align: center; padding: 2.5rem;
+    animation: fadeSlideUp 0.5s ease;
+  }
+  .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .success-title { font-family: 'Prompt', sans-serif; font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+  .success-desc { font-size: 15px; color: var(--gray-400); margin-bottom: 1.5rem; line-height: 1.7; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 3rem 2rem;
+    text-align: center; position: relative; z-index: 1;
+  }
+  .footer-logo {
+    font-family: 'Prompt', sans-serif; font-size: 22px; font-weight: 700;
+    color: var(--white); margin-bottom: 0.5rem;
+  }
+  .footer-desc { font-size: 13px; color: var(--gray-400); margin-bottom: 2rem; }
+  .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+  .footer-link { font-size: 13px; color: var(--gray-400); cursor: pointer; transition: color 0.2s; }
+  .footer-link:hover { color: var(--sky); }
+  .footer-copy { margin-top: 2rem; font-size: 12px; color: var(--gray-600); }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    background: rgba(14,165,233,0.15);
+    border: 1px solid rgba(14,165,233,0.35);
+    backdrop-filter: blur(10px);
+    border-radius: 12px; padding: 12px 20px;
+    color: var(--white); font-size: 14px;
+    display: flex; align-items: center; gap: 8px;
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(0); }
+
+  /* SCROLL TO TOP - นิ่งสนิท ไม่เด้งขึ้นเด้งลง ไม่ดันจอขวาเว้าแล้วครับ */
+  .scroll-top {
+    position: fixed; bottom: 40px; right: 40px; z-index: 200;
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(14,165,233,0.2);
+    border: 1px solid rgba(14,165,233,0.3);
+    color: var(--sky); font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; 
+    transition: opacity 0.3s ease; /* เปลี่ยนเป็นเปลี่ยนแค่ความจาง (Opacity) ไม่ขยับตำแหน่งและไม่มี Animation เด้งเลื่อนขึ้นลง */
+    opacity: 0; pointer-events: none;
+  }
+  .scroll-top.visible { opacity: 1; pointer-events: all; }
+  .scroll-top:hover { background: rgba(14,165,233,0.35); }
+
+  /* ANIMATIONS */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  @media (max-width: 768px) {
+    nav .nav-links { display: none; }
+    .modal-profile-header { flex-direction: column; text-align: center; }
+    .modal-img-container { margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div id="particles"></div>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="#hero">
+    <div class="nav-logo-icon">
+      <!-- ⚠️ แก้ไขโลโก้ตรงนี้: เปลี่ยนลิงก์ใน src="..." ให้เป็นรูปโลโก้ของคุณได้เลยครับ -->
+      <img src="https://campus.campus-star.com/app/uploads/2015/06/ตรา10.jpg" class="nav-logo-img" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='🏫';">
+    </div>
+    สภานักเรียน
+  </a>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="scrollTo('hero')">หน้าแรก</button>
+    <button class="nav-link" onclick="scrollTo('members')">คณะกรรมการ</button>
+    <button class="nav-link" onclick="scrollTo('petition')">ส่งคำร้อง</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div>
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      ปีการศึกษา 2568
+    </div>
+    <h1 class="hero-title">สภานักเรียน<br><span>โรงเรียนสาธิต</span></h1>
+    <p class="hero-subtitle"><br></p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="scrollTo('members')">👥 ทำความรู้จักสภานักเรียน</button>
+      <button class="btn-secondary" onclick="scrollTo('petition')">📝 ส่งคำร้อง</button>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERS -->
+<section id="members">
+  <div class="section-header reveal">
+    <div class="section-tag">คณะทำงาน</div>
+    <h2 class="section-title">คณะกรรมการสภานักเรียน</h2>
+    <p class="section-desc">คลิกที่การ์ดเพื่อดูรูปภาพขนาดใหญ่และรายละเอียดหน้าที่ความรับผิดชอบ</p>
+  </div>
+  <div class="members-grid" id="membersGrid"></div>
+</section>
+
+<!-- PETITION -->
+<section id="petition">
+  <div class="section-header reveal">
+    <div class="section-tag">คำร้อง</div>
+    <h2 class="section-title">ส่งคำร้องหาสภา</h2>
+    <p class="section-desc">พิมพ์รายละเอียดความต้องการหรือปัญหาที่พบเจอ เพื่อส่งตรงไปยังห้องสภานักเรียนผ่านระบบ Discord</p>
+  </div>
+  <div class="petition-form reveal" id="petitionForm">
+
+    <div class="form-group">
+      <label>รายละเอียดคำร้อง</label>
+      <textarea id="petDetail" maxlength="1000" placeholder="พิมพ์ข้อความรายละเอียดคำร้อง ข้อเสนอแนะ หรือปัญหาที่ต้องการแจ้งที่นี่..." oninput="updateChar()"></textarea>
+      <div class="char-count"><span id="charCount">0</span>/1000 ตัวอักษร</div>
+    </div>
+
+    <div class="form-group">
+      <label>แนบรูปภาพประกอบ (ถ้ามี)</label>
+      <div class="file-upload-wrapper">
+        <input type="file" id="petFile" class="file-upload-input" accept="image/*" onchange="previewImage(this)">
+        <div class="file-upload-info" id="uploadInfo">
+          📸 คลิกหรือลากวางรูปภาพที่นี่เพื่อแนบไฟล์<br>
+          <span style="font-size:11px; color:var(--gray-500);">(รองรับไฟล์รูปภาพขนาดไม่เกิน 5MB)</span>
+        </div>
+        <img id="imagePreview" class="file-preview" alt="ตัวอย่างรูปภาพ">
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitPetition()">
+      📩 ส่งคำร้องเข้า Discord
+    </button>
+  </div>
+
+  <div class="success-msg" id="successMsg">
+    <div class="success-icon">✨</div>
+    <div class="success-title">ส่งคำร้องเข้า Discord สำเร็จ!</div>
+    <div class="success-desc">ข้อมูลและรูปภาพของคุณถูกส่งไปยังห้องระบบรับเรื่องเรียบร้อยแล้ว<br>คณะกรรมการสภานักเรียนจะรีบตรวจสอบข้อมูลให้เร็วที่สุด</div>
+    <br>
+    <button class="btn-secondary" onclick="resetForm()" style="border-radius:10px;padding:10px 24px;font-size:14px">
+      📝 ส่งคำร้องเพิ่มอีกครั้ง
+    </button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">🏫 สภานักเรียน</div>
+  <div class="footer-desc">โรงเรียนสาธิต · ปีการศึกษา 2568</div>
+  <div class="footer-links">
+    <span class="footer-link" onclick="scrollTo('hero')">หน้าแรก</span>
+    <span class="footer-link" onclick="scrollTo('members')">คณะกรรมการ</span>
+    <span class="footer-link" onclick="scrollTo('petition')">ส่งคำร้อง</span>
+  </div>
+  <div class="footer-copy">© 2568 สภานักเรียนโรงเรียนสาธิต สงวนลิขสิทธิ์</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="partyModal">
+  <div class="modal-box" id="modalContent"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ <span id="toastMsg"></span></div>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1496752493990772878/rGNVM3xDrO0kt2iJPQtmLVFn-6tBaPvca78vYkJw36ZxlS3eQcOvxZeU41iEqZElmwOG";
+
+const members = [
+  {
+    id: 1,
+    name: 'นายพีระพัฒน์ สุขสันต์',
+    role: 'ประธานนักเรียน',
+    class: 'ชั้นมัธยมศึกษาปีที่ 5',
+    color: '#0ea5e9',
+    emoji: '👨‍🎓',
+    imgUrl: 'member1.jpg',
+    quote: '"มุ่งมั่นประสานงาน ยึดประโยชน์ของเพื่อนนักเรียนสาธิตเป็นที่หนึ่ง"',
+    responsibilities: [
+      { icon: '👑', text: 'เป็นประธานในที่ประชุมและกำกับดูแลการทำงานภาพรวมของสภา' },
+      { icon: '🤝', text: 'ประสานงานระหว่างนักเรียน คณะครู และฝ่ายบริหารโรงเรียน' },
+      { icon: '📢', text: 'เป็นตัวแทนนักเรียนในพิธีการและกิจกรรมภายนอกต่าง ๆ' }
+    ]
+  },
+  {
+    id: 2,
+    name: 'นางสาวมณีรัตน์ ดาวดิน',
+    role: 'รองประธานนักเรียน',
+    class: 'ชั้นมัธยมศึกษาปีที่ 5',
+    color: '#f59e0b',
+    emoji: '👩‍🎓',
+    imgUrl: 'member2.jpg',
+    quote: '"พร้อมรับฟังทุกปัญหา เติมเต็มทุกความสร้างสรรค์เพื่อโรงเรียนของเรา"',
+    responsibilities: [
+      { icon: '📋', text: 'ช่วยปฏิบัติราชการแทนประธานนักเรียนเมื่อประธานไม่สามารถปฏิบัติหน้าที่ได้' },
+      { icon: '🔍', text: 'ดูแลกลั่นกรองโครงการและคำร้องเรียนทั่วไปจากนักเรียน' },
+      { icon: '✨', text: 'กำกับดูแลฝ่ายกิจกรรมและการประชาสัมพันธ์สภา' }
+    ]
+  },
+  {
+    id: 3,
+    name: 'นางสาวอริสา แงสุรีย์',
+    role: 'หัวหน้าฝ่ายวิชาการ',
+    class: 'ชั้นมัธยมศึกษาปีที่ 5',
+    color: '#10b981',
+    emoji: '👩‍🎓',
+    imgUrl: 'member3.jpg',
+    quote: '"ส่งเสริมการเรียนรู้ยุคใหม่ เข้าถึงง่าย พัฒนาได้ทุกคน"',
+    responsibilities: [
+      { icon: '📚', text: 'บริหารจัดการโครงการห้องสมุดดิจิทัลและแหล่งเรียนรู้ออนไลน์' },
+      { icon: '🎓', text: 'จัดกิจกรรมติวพี่สอนน้องก่อนช่วงสอบปลายภาค' },
+      { icon: '💡', text: 'จัดหาและรวบรวมข้อเสนอแนะด้านการเรียนยื่นต่อวิชาการโรงเรียน' }
+    ]
+  },
+  {
+    id: 4,
+    name: 'นายวรินทร์ ทองดี',
+    role: 'หัวหน้าฝ่ายกิจกรรมและกีฬา',
+    class: 'ชั้นมัธยมศึกษาปีที่ 5',
+    color: '#ec4899',
+    emoji: '🧑‍🎓',
+    imgUrl: 'member4.jpg',
+    quote: '"สร้างสีสันให้ชีวิตในรั้วโรงเรียน สนุกสนานและสร้างสรรค์"',
+    responsibilities: [
+      { icon: '⚽', text: 'วางแผนและดำเนินงานจัดการแข่งขันกีฬาสีและกิจกรรมสานสัมพันธ์' },
+      { icon: '🎭', text: 'สนับสนุนและประสานงานร่วมกับชมรมดนตรี ศิลปะ และนันทนาการ' },
+      { icon: '🏆', text: 'ดูแลการจัดสรรและบำรุงรักษาอุปกรณ์กีฬาส่วนกลางของโรงเรียน' }
+    ]
+  },
+  {
+    id: 5,
+    name: 'นายภูมิพัฒน์ ดาวเงิน',
+    role: 'เหรัญญิกและฝ่ายสวัสดิการ',
+    class: 'ชั้นมัธยมศึกษาปีที่ 5',
+    color: '#8b5cf6',
+    emoji: '👨‍🎓',
+    imgUrl: 'member5.jpg',
+    quote: '"โปร่งใส ตรวจสอบได้ ดูแลใส่ใจความปลอดภัยของทุกคน"',
+    responsibilities: [
+      { icon: '💰', text: 'จัดทำบัญชีรายรับ-รายจ่าย และดูแลเงินงบประมาณของสภานักเรียน' },
+      { icon: '🧼', text: 'ประสานงานเรื่องความสะอาด โรงอาหาร และจุดบริการน้ำดื่มร่วมกับโรงเรียน' },
+      { icon: '🔒', text: 'รวบรวมจุดเสี่ยงในโรงเรียนเพื่อเสนอให้ฝ่ายสถานที่ปรับปรุงความปลอดภัย' }
+    ]
+  }
+];
+
+function renderMembers() {
+  const grid = document.getElementById('membersGrid');
+  grid.innerHTML = members.map((m, i) => `
+    <div class="member-card reveal reveal-delay-${(i%4)+1}" onclick="openMemberModal(${m.id})">
+      <div class="member-img-container">
+        ${m.imgUrl ?
+          `<img src="${m.imgUrl}" class="member-card-img" alt="${m.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''
+        }
+        <div class="member-avatar-placeholder" style="display: ${m.imgUrl ? 'none' : 'flex'}; color: ${m.color}; background: rgba(255,255,255,0.02)">
+          ${m.emoji}
+        </div>
+        <div class="member-role-badge" style="background: ${m.color}cc;">${m.role}</div>
+      </div>
+      <div class="member-body">
+        <div class="member-name">${m.name}</div>
+        <div class="member-class">${m.class}</div>
+        <div class="member-quote">${m.quote}</div>
+      </div>
+    </div>
+  `).join('');
+  observeReveal();
+}
+
+function openMemberModal(id) {
+  const m = members.find(x => x.id === id);
+  document.getElementById('modalContent').innerHTML = `
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-profile-header">
+      <div class="modal-img-container" style="border-color: ${m.color}88">
+        ${m.imgUrl ?
+          `<img src="${m.imgUrl}" class="modal-profile-img" alt="${m.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''
+        }
+        <div class="modal-profile-avatar-placeholder" style="display: ${m.imgUrl ? 'none' : 'flex'};">${m.emoji}</div>
+      </div>
+      <div class="modal-header-info">
+        <div class="modal-member-name">${m.name}</div>
+        <div class="modal-member-role" style="background: ${m.color}">${m.role}</div>
+        <div class="modal-member-sub">${m.class}</div>
+      </div>
+    </div>
+    <div class="modal-section">คติประจำใจ</div>
+    <div class="modal-quote-box">${m.quote}</div>
+    <div class="modal-section">หน้าที่ความรับผิดชอบหลัก</div>
+    <div class="modal-responsibility-list">
+      ${m.responsibilities.map(resp => `
+        <div class="modal-responsibility-item">
+          <span class="modal-resp-icon">${resp.icon}</span>
+          <div class="modal-resp-text">${resp.text}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  document.getElementById('partyModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('partyModal').classList.remove('open');
+}
+
+document.getElementById('partyModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function updateChar() {
+  const v = document.getElementById('petDetail').value.length;
+  document.getElementById('charCount').textContent = v;
+}
+
+function previewImage(input) {
+  const file = input.files[0];
+  const preview = document.getElementById('imagePreview');
+  const info = document.getElementById('uploadInfo');
+
+  if (file) {
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('⚠️ ขนาดไฟล์รูปภาพห้ามเกิน 5MB ครับ');
+      input.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      info.style.display = 'none';
+    }
+    reader.readAsDataURL(file);
+  }
+}
+
+function submitPetition() {
+  const detail = document.getElementById('petDetail').value.trim();
+  const fileInput = document.getElementById('petFile');
+  const submitBtn = document.getElementById('submitBtn');
+
+  if (!detail) {
+    showToast('⚠️ กรุณากรอกรายละเอียดคำร้องเรียนด้วยครับ');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '⏳ กำลังส่งคำร้อง...';
+
+  const formData = new FormData();
+  const payload = {
+    username: "ระบบรับเรื่องร้องเรียน สภานักเรียนโรงเรียนสาธิต",
+    avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100",
+    embeds: [{
+      title: "📝 มีคำร้องเรียน/ข้อเสนอแนะใหม่แจ้งเข้ามา",
+      description: detail,
+      color: 960977,
+      timestamp: new Date().toISOString(),
+      footer: { text: "ระบบอัตโนมัติ สภานักเรียนโรงเรียนสาธิต" }
+    }]
+  };
+
+  formData.append('payload_json', JSON.stringify(payload));
+
+  if (fileInput.files.length > 0) {
+    formData.append('file', fileInput.files[0]);
+  }
+
+  fetch(DISCORD_WEBHOOK_URL, { method: 'POST', body: formData })
+  .then(response => {
+    if (response.ok) {
+      document.getElementById('petitionForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      showToast('✅ ส่งข้อมูลเข้าดิสคอร์ดสำเร็จ!');
+    } else {
+      throw new Error('Network response was not ok.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showToast('❌ เกิดข้อผิดพลาด ไม่สามารถส่งข้อมูลได้');
+  })
+  .finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = '📩 ส่งคำร้องเข้า Discord';
+  });
+}
+
+function resetForm() {
+  document.getElementById('petitionForm').style.display = 'block';
+  document.getElementById('successMsg').style.display = 'none';
+  document.getElementById('petDetail').value = '';
+  document.getElementById('petFile').value = '';
+  document.getElementById('charCount').textContent = '0';
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('imagePreview').src = '';
+  document.getElementById('uploadInfo').style.display = 'block';
+}
+
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelector(`.nav-link[onclick="scrollTo('${id}')"]`)?.classList.add('active');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function initParticles() {
+  const wrap = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const sz = 4 + Math.random() * 20;
+    p.style.cssText = `
+      width: ${sz}px; height: ${sz}px;
+      left: ${Math.random() * 100}%;
+      animation-duration: ${8 + Math.random() * 12}s;
+      animation-delay: ${Math.random() * 10}s;
+    `;
+    wrap.appendChild(p);
+  }
+}
+
+document.addEventListener('mousemove', e => {
+  const c = document.getElementById('cursor');
+  const r = document.getElementById('cursorRing');
+  if(c && r) {
+    c.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
+    r.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
+  }
+});
+
+function observeReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
+
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTopBtn');
+  if (window.scrollY > 400) btn.classList.add('visible');
+  else btn.classList.remove('visible');
+});
+
+const sections = ['hero','members','petition'];
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 100) cur = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('onclick') === `scrollTo('${cur}')`);
+  });
+});
+
+initParticles();
+renderMembers();
+observeReveal();
+</script>
+</body>
+</html>
