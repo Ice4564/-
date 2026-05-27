@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>สภานักเรียน — โรงเรียนสาธิต</title>
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700;800&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --sky: #0ea5e9;
@@ -111,14 +113,14 @@
   }
   .nav-logo-icon {
     width: 36px; height: 36px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--sky), var(--sky-deep));
+    background: transparent;
     display: flex; align-items: center; justify-content: center;
     overflow: hidden;
   }
   .nav-logo-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
   .nav-links { display: flex; gap: 4px; }
   .nav-link {
@@ -136,30 +138,44 @@
 
   /* HERO */
   #hero {
-    min-height: 80vh;
+    min-height: 100vh;
     display: flex; align-items: center; justify-content: center;
-    text-align: center; padding: 7rem 2rem 4rem;
+    text-align: center; padding: 8rem 2rem 6rem;
     position: relative; overflow: hidden;
   }
   .hero-glow {
-    position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 400px; border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(14,165,233,0.15) 0%, transparent 70%);
+    position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
+    width: 900px; height: 600px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(14,165,233,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-glow-2 {
+    position: absolute; bottom: 10%; left: 10%;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(56,189,248,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-glow-3 {
+    position: absolute; top: 20%; right: 5%;
+    width: 350px; height: 350px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(3,105,161,0.1) 0%, transparent 70%);
     pointer-events: none;
   }
   .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(14,165,233,0.1);
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(14,165,233,0.08);
     border: 1px solid rgba(14,165,233,0.3);
-    border-radius: 999px; padding: 6px 18px;
-    font-size: 13px; color: var(--sky);
-    margin-bottom: 1.5rem;
+    border-radius: 999px; padding: 8px 22px;
+    font-size: 14px; color: var(--sky);
+    margin-bottom: 2rem;
     animation: fadeSlideDown 0.6s ease both;
+    letter-spacing: 0.5px;
   }
   .hero-badge-dot {
-    width: 6px; height: 6px; border-radius: 50%;
+    width: 8px; height: 8px; border-radius: 50%;
     background: var(--sky);
     animation: pulse 1.5s ease infinite;
+    box-shadow: 0 0 8px var(--sky);
   }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.5);} }
   @keyframes fadeSlideDown { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
@@ -167,51 +183,90 @@
 
   .hero-title {
     font-family: 'Prompt', sans-serif;
-    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-size: clamp(3rem, 8vw, 6.5rem);
     font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
+    line-height: 1.05;
+    margin-bottom: 1.75rem;
     animation: fadeSlideDown 0.7s 0.1s ease both;
+    letter-spacing: -1px;
   }
   .hero-title span {
-    background: linear-gradient(135deg, var(--sky) 0%, #38bdf8 50%, #7dd3fc 100%);
+    background: linear-gradient(135deg, #38bdf8 0%, var(--sky) 40%, #7dd3fc 100%);
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 30px rgba(14,165,233,0.3));
   }
   .hero-subtitle {
-    font-size: 1.2rem; color: var(--gray-400);
-    margin-bottom: 2.5rem; line-height: 1.7;
-    max-width: 600px; margin-left: auto; margin-right: auto;
+    font-size: 1.25rem; color: var(--gray-400);
+    margin-bottom: 3rem; line-height: 1.8;
+    max-width: 560px; margin-left: auto; margin-right: auto;
     animation: fadeSlideDown 0.7s 0.2s ease both;
   }
-  .hero-cta {
-    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-    animation: fadeSlideDown 0.7s 0.3s ease both;
-  }
   .btn-primary {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: linear-gradient(135deg, var(--sky), var(--sky-deep));
-    color: var(--white); border: none; border-radius: 12px;
-    padding: 12px 28px; font-size: 15px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #38bdf8, var(--sky), var(--sky-deep));
+    background-size: 200% 200%;
+    color: var(--white); border: none; border-radius: 16px;
+    padding: 16px 36px; font-size: 17px; font-weight: 700;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.35s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 4px 24px rgba(14,165,233,0.35), 0 0 0 0 rgba(14,165,233,0);
+    position: relative; overflow: hidden;
+    animation: bgShift 4s ease infinite;
+  }
+  @keyframes bgShift { 0%,100%{background-position:0% 50%;} 50%{background-position:100% 50%;} }
+  .btn-primary::before {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s ease;
+  }
+  .btn-primary:hover::before { left: 150%; }
+  .btn-primary:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 16px 40px rgba(14,165,233,0.5);
+  }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.18);
+    border-radius: 16px; padding: 16px 36px;
+    font-size: 17px; font-weight: 600;
     font-family: 'Sarabun', sans-serif;
     cursor: pointer; text-decoration: none;
     transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
-    box-shadow: 0 0 0 0 rgba(14,165,233,0);
   }
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(14,165,233,0.4);
+  .btn-secondary:hover {
+    border-color: var(--sky);
+    color: var(--sky);
+    background: rgba(14,165,233,0.08);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(14,165,233,0.15);
   }
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: transparent; color: var(--white);
-    border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: 12px; padding: 12px 28px;
-    font-size: 15px; font-family: 'Sarabun', sans-serif;
-    cursor: pointer; text-decoration: none;
-    transition: all 0.25s;
+  .btn-secondary:active { transform: scale(0.97); }
+
+  .hero-scroll-hint {
+    margin-top: 4rem;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--gray-400); font-size: 12px; letter-spacing: 1px;
+    animation: fadeSlideUp 0.8s 0.8s ease both;
+    opacity: 0.6;
   }
-  .btn-secondary:hover { border-color: var(--sky); color: var(--sky); }
+  .hero-scroll-arrow {
+    width: 24px; height: 24px;
+    border-right: 2px solid var(--gray-400);
+    border-bottom: 2px solid var(--gray-400);
+    transform: rotate(45deg);
+    animation: scrollBounce 1.5s ease infinite;
+    margin-top: 2px;
+  }
+  @keyframes scrollBounce { 0%,100%{transform:rotate(45deg) translateY(0);} 50%{transform:rotate(45deg) translateY(6px);} }
 
   /* SECTION HEADER */
   .section-header { text-align: center; margin-bottom: 3rem; }
@@ -321,70 +376,170 @@
   /* MODAL */
   .modal-overlay {
     display: none; position: fixed; inset: 0; z-index: 500;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(14px);
     align-items: center; justify-content: center; padding: 1rem;
   }
   .modal-overlay.open { display: flex; }
+
   .modal-box {
-    background: var(--gray-800);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 24px; padding: 2rem;
-    max-width: 550px; width: 100%;
+    background: linear-gradient(160deg, #111827 0%, #0c1929 100%);
+    border: 1px solid rgba(14,165,233,0.2);
+    border-radius: 28px;
+    max-width: 700px; width: 100%;
     position: relative;
-    animation: modalIn 0.4s cubic-bezier(.34,1.56,.64,1);
-    max-height: 90vh; overflow-y: auto;
+    animation: modalIn 0.45s cubic-bezier(.34,1.56,.64,1);
+    max-height: 92vh; overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 0 1px rgba(14,165,233,0.08), 0 32px 80px rgba(0,0,0,0.6), 0 0 80px rgba(14,165,233,0.05);
   }
-  @keyframes modalIn { from{ opacity:0; transform:scale(0.85) translateY(30px); } to{ opacity:1; transform:scale(1) translateY(0); } }
+  .modal-box::-webkit-scrollbar { width: 4px; }
+  .modal-box::-webkit-scrollbar-track { background: transparent; }
+  .modal-box::-webkit-scrollbar-thumb { background: rgba(14,165,233,0.3); border-radius: 99px; }
+
+  @keyframes modalIn {
+    from { opacity:0; transform:scale(0.88) translateY(40px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+  }
+
   .modal-close {
-    position: absolute; top: 1rem; right: 1rem;
-    width: 32px; height: 32px; border-radius: 50%;
-    background: rgba(255,255,255,0.08); border: none;
-    color: var(--gray-400); cursor: pointer; font-size: 18px;
+    position: absolute; top: 1.25rem; right: 1.25rem;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--gray-400); cursor: pointer; font-size: 16px;
     display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; z-index: 10;
+    transition: all 0.25s; z-index: 10;
   }
-  .modal-close:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+  .modal-close:hover {
+    background: rgba(239,68,68,0.2);
+    border-color: rgba(239,68,68,0.4);
+    color: #f87171;
+    transform: rotate(90deg);
+  }
 
-  .modal-profile-header {
-    display: flex; gap: 20px; align-items: center; margin-bottom: 1.5rem;
+  .modal-hero-banner {
+    width: 100%; height: 220px;
+    position: relative; overflow: hidden;
+    border-radius: 28px 28px 0 0;
   }
-  .modal-img-container {
-    width: 140px; height: 180px; border-radius: 16px;
-    overflow: hidden; background: var(--gray-900); flex-shrink: 0;
-    border: 2px solid rgba(255,255,255,0.1);
+  .modal-hero-banner-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0c2a3e, #0369a1);
+  }
+  .modal-hero-banner-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, #0c1929 10%, rgba(12,25,41,0.3) 100%);
+  }
+  .modal-hero-banner::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background-image:
+      linear-gradient(rgba(14,165,233,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,165,233,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .modal-hero-img-wrap {
+    position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+    z-index: 3;
+    width: 140px; height: 175px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 3px solid rgba(14,165,233,0.5);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(14,165,233,0.15);
+    background: #0f172a;
     display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.3s;
   }
-  .modal-profile-img { width: 100%; height: 100%; object-fit: cover; }
-  .modal-profile-avatar-placeholder { font-size: 4rem; }
+  .modal-hero-img-wrap img { width:100%; height:100%; object-fit:cover; }
+  .modal-hero-img-placeholder { font-size: 4.5rem; }
 
-  .modal-header-info { flex: 1; }
+  .modal-banner-glow {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 2;
+  }
+
+  .modal-content {
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+  }
+
+  .modal-name-area { margin-bottom: 0.5rem; }
   .modal-member-name {
     font-family: 'Prompt', sans-serif;
-    font-size: 22px; font-weight: 700;
-    color: var(--white); margin-bottom: 4px;
+    font-size: 28px; font-weight: 800;
+    color: var(--white); margin-bottom: 0.75rem;
+    line-height: 1.2;
   }
   .modal-member-role {
-    display: inline-block; padding: 4px 12px; border-radius: 6px;
-    font-size: 13px; font-weight: 600; color: var(--white);
-    margin-bottom: 8px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 18px; border-radius: 999px;
+    font-size: 14px; font-weight: 700; color: var(--white);
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
   }
-  .modal-member-sub { font-size: 14px; color: var(--gray-400); }
+  .modal-member-sub {
+    font-size: 14px; color: var(--gray-400);
+    margin-bottom: 1.75rem;
+  }
 
-  .modal-section { font-size: 12px; font-weight: 600; letter-spacing: 1px; color: var(--gray-400); text-transform: uppercase; margin-bottom: 8px; margin-top: 1.25rem; }
+  .modal-divider {
+    height: 1px; background: linear-gradient(90deg, transparent, rgba(14,165,233,0.2), transparent);
+    margin: 0 0 1.5rem;
+  }
+
+  .modal-section {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; color: var(--sky);
+    text-transform: uppercase;
+    margin-bottom: 10px; margin-top: 1.5rem;
+    text-align: left;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modal-section::before {
+    content: '';
+    display: inline-block; width: 20px; height: 2px;
+    background: var(--sky); border-radius: 999px;
+  }
+
   .modal-quote-box {
-    background: rgba(255,255,255,0.04); border-radius: 10px;
-    padding: 12px 16px; font-size: 14px; color: var(--gray-200);
-    font-style: italic; line-height: 1.6;
+    background: rgba(14,165,233,0.06);
+    border: 1px solid rgba(14,165,233,0.15);
+    border-left: 3px solid var(--sky);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 15px; color: #cbd5e1;
+    font-style: italic; line-height: 1.7;
+    text-align: left;
   }
-  .modal-responsibility-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .modal-responsibility-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
   .modal-responsibility-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    background: rgba(255,255,255,0.04); border-radius: 10px;
-    padding: 10px 14px;
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 14px 16px;
+    transition: all 0.25s; text-align: left;
   }
-  .modal-resp-icon { font-size: 1.2rem; flex-shrink: 0; }
-  .modal-resp-text { font-size: 13px; color: var(--gray-200); line-height: 1.5; }
+  .modal-responsibility-item:hover {
+    background: rgba(14,165,233,0.07);
+    border-color: rgba(14,165,233,0.2);
+    transform: translateY(-2px);
+  }
+  .modal-resp-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+  .modal-resp-text { font-size: 14px; color: #cbd5e1; line-height: 1.5; font-weight: 500; }
+
+  @media(max-width:600px) {
+    .modal-responsibility-list { grid-template-columns: 1fr; }
+    .modal-member-name { font-size: 22px; }
+    .modal-hero-banner { height: 180px; }
+    .modal-hero-img-wrap { width: 110px; height: 140px; }
+    .modal-content { padding: 2.5rem 1.25rem 1.5rem; }
+  }
 
   /* PETITION SECTION */
   #petition {
@@ -425,7 +580,6 @@
   textarea { resize: vertical; min-height: 150px; line-height: 1.6; }
   input::placeholder, textarea::placeholder { color: var(--gray-500); }
 
-  /* File upload styling */
   .file-upload-wrapper {
     position: relative;
     width: 100%;
@@ -487,6 +641,10 @@
   .footer-logo {
     font-family: 'Prompt', sans-serif; font-size: 22px; font-weight: 700;
     color: var(--white); margin-bottom: 0.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .footer-logo-img {
+    height: 30px; width: auto; object-fit: contain;
   }
   .footer-desc { font-size: 13px; color: var(--gray-400); margin-bottom: 2rem; }
   .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
@@ -509,7 +667,6 @@
   }
   .toast.show { transform: translateX(0); }
 
-  /* SCROLL TO TOP - นิ่งสนิท ไม่เด้งขึ้นเด้งลง ไม่ดันจอขวาเว้าแล้วครับ */
   .scroll-top {
     position: fixed; bottom: 40px; right: 40px; z-index: 200;
     width: 44px; height: 44px; border-radius: 12px;
@@ -518,7 +675,7 @@
     color: var(--sky); font-size: 20px;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
-    transition: opacity 0.3s ease; /* เปลี่ยนเป็นเปลี่ยนแค่ความจาง (Opacity) ไม่ขยับตำแหน่งและไม่มี Animation เด้งเลื่อนขึ้นลง */
+    transition: opacity 0.3s ease;
     opacity: 0; pointer-events: none;
   }
   .scroll-top.visible { opacity: 1; pointer-events: all; }
@@ -535,53 +692,118 @@
   .reveal-delay-3 { transition-delay: 0.3s; }
   .reveal-delay-4 { transition-delay: 0.4s; }
 
+  /* LOADING SCREEN */
+  #loadingScreen {
+    position: fixed; inset: 0; z-index: 10000;
+    background: var(--gray-900);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #loadingScreen.hidden { opacity: 0; visibility: hidden; }
+  .loader-logo { width: 80px; height: 80px; margin-bottom: 1.5rem; animation: loaderPulse 1s ease infinite alternate; display: flex; align-items: center; justify-content: center; }
+  .loader-logo-img { width: 100%; height: 100%; object-fit: contain; }
+  @keyframes loaderPulse { from{transform:scale(0.95);opacity:0.8;} to{transform:scale(1.05);opacity:1;} }
+  .loader-text { font-family:'Prompt',sans-serif; font-size:18px; color:var(--white); margin-bottom: 1.5rem; letter-spacing: 0.5px; }
+  .loader-bar-wrap { width: 200px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; }
+  .loader-bar { height: 100%; width: 0%; background: linear-gradient(90deg,var(--sky),#38bdf8); border-radius: 999px; }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; background: none; border: none; padding: 6px;
+  }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu {
+    display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
+    background: rgba(15,23,42,0.97); backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(14,165,233,0.15);
+    flex-direction: column; padding: 1rem;
+    gap: 4px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu .nav-link { text-align: left; padding: 10px 16px; }
+
+  .type-cursor { display: inline-block; width: 3px; height: 0.85em; background: var(--sky); margin-left: 3px; vertical-align: middle; animation: blink 1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+  .wave-divider { width: 100%; overflow: hidden; line-height: 0; }
+  .wave-divider svg { display: block; }
+
+  .member-card:hover { box-shadow: 0 0 0 1px var(--card-glow, rgba(14,165,233,0.4)), 0 24px 48px rgba(0,0,0,0.5); }
+
   @media (max-width: 768px) {
-    nav .nav-links { display: none; }
-    .modal-profile-header { flex-direction: column; text-align: center; }
-    .modal-img-container { margin: 0 auto; }
+    .hamburger { display:flex; }
+    nav .nav-links { display:none; }
+    .mobile-menu .nav-link { display: block; width: 100%; }
   }
 </style>
 </head>
 <body>
 
+<div id="loadingScreen">
+  <div class="loader-logo">
+    <img src="imagelogo1.jpg" class="loader-logo-img" alt="โลโก้โรงเรียน">
+  </div>
+  <div class="loader-text">ระบบสภานักเรียน</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
+</div>
+
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div id="particles"></div>
 
-<!-- NAVBAR -->
 <nav>
   <a class="nav-logo" href="#hero">
     <div class="nav-logo-icon">
-      <!-- ⚠️ แก้ไขโลโก้ตรงนี้: เปลี่ยนลิงก์ใน src="..." ให้เป็นรูปโลโก้ของคุณได้เลยครับ -->
-      <img src="https://campus.campus-star.com/app/uploads/2015/06/ตรา10.jpg" class="nav-logo-img" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='🏫';">
+      <img src="imagelogo1.jpg" class="nav-logo-img" alt="โลโก้">
     </div>
     สภานักเรียน
   </a>
   <div class="nav-links">
-    <button class="nav-link active" onclick="scrollTo('hero')">หน้าแรก</button>
-    <button class="nav-link" onclick="scrollTo('members')">คณะกรรมการ</button>
-    <button class="nav-link" onclick="scrollTo('petition')">ส่งคำร้อง</button>
+    <button class="nav-link active" onclick="scrollToSection('hero')">หน้าแรก</button>
+    <button class="nav-link" onclick="scrollToSection('members')">คณะกรรมการ</button>
+    <button class="nav-link" onclick="scrollToSection('petition')">ส่งคำร้อง</button>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="เมนู">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- HERO -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="nav-link" onclick="scrollToSection('hero');toggleMenu()">หน้าแรก</button>
+  <button class="nav-link" onclick="scrollToSection('members');toggleMenu()">คณะกรรมการ</button>
+  <button class="nav-link" onclick="scrollToSection('petition');toggleMenu()">ส่งคำร้อง</button>
+</div>
+
 <section id="hero">
   <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-glow-3"></div>
   <div>
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
-      ปีการศึกษา 2568
+      ปีการศึกษา 2568 ·
     </div>
-    <h1 class="hero-title">สภานักเรียน<br><span>โรงเรียนสาธิต</span></h1>
+    <h1 class="hero-title">สภานักเรียน<br><span id="typeTarget"></span><span class="type-cursor" id="typeCursor"></span></h1>
     <p class="hero-subtitle"><br></p>
     <div class="hero-cta">
-      <button class="btn-primary" onclick="scrollTo('members')">👥 ทำความรู้จักสภานักเรียน</button>
-      <button class="btn-secondary" onclick="scrollTo('petition')">📝 ส่งคำร้อง</button>
+      <button class="btn-primary" onclick="goSection('members')">
+        <span style="font-size:1.2em"></span> ทำความรู้จักสภานักเรียน
+      </button>
+      <button class="btn-secondary" onclick="goSection('petition')">
+        <span style="font-size:1.2em">📝</span> ส่งคำร้อง
+      </button>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>เลื่อนลง</span>
+      <div class="hero-scroll-arrow"></div>
     </div>
   </div>
 </section>
 
-<!-- MEMBERS -->
 <section id="members">
   <div class="section-header reveal">
     <div class="section-tag">คณะทำงาน</div>
@@ -591,7 +813,12 @@
   <div class="members-grid" id="membersGrid"></div>
 </section>
 
-<!-- PETITION -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:60px">
+    <path d="M0,20 C480,60 960,0 1440,40 L1440,60 L0,60 Z" fill="rgba(14,165,233,0.04)"/>
+  </svg>
+</div>
+
 <section id="petition">
   <div class="section-header reveal">
     <div class="section-tag">คำร้อง</div>
@@ -635,25 +862,25 @@
 </section>
 
 <footer>
-  <div class="footer-logo">🏫 สภานักเรียน</div>
+  <div class="footer-logo">
+    <img src="imagelogo1.jpg" class="footer-logo-img" alt="โลโก้">
+    สภานักเรียน
+  </div>
   <div class="footer-desc">โรงเรียนสาธิต · ปีการศึกษา 2568</div>
   <div class="footer-links">
-    <span class="footer-link" onclick="scrollTo('hero')">หน้าแรก</span>
-    <span class="footer-link" onclick="scrollTo('members')">คณะกรรมการ</span>
-    <span class="footer-link" onclick="scrollTo('petition')">ส่งคำร้อง</span>
+    <span class="footer-link" onclick="scrollToSection('hero')">หน้าแรก</span>
+    <span class="footer-link" onclick="scrollToSection('members')">คณะกรรมการ</span>
+    <span class="footer-link" onclick="scrollToSection('petition')">ส่งคำร้อง</span>
   </div>
   <div class="footer-copy">© 2568 สภานักเรียนโรงเรียนสาธิต สงวนลิขสิทธิ์</div>
 </footer>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="partyModal">
   <div class="modal-box" id="modalContent"></div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">✅ <span id="toastMsg"></span></div>
 
-<!-- SCROLL TOP -->
 <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
@@ -668,11 +895,11 @@ const members = [
     color: '#0ea5e9',
     emoji: '👨‍🎓',
     imgUrl: 'member1.jpg',
-    quote: '""',
+    quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '👑', text: '' },
-      { icon: '🤝', text: '' },
-      { icon: '📢', text: '' }
+      { icon: '', text: 'Suggestion Box' },
+      { icon: '', text: 'กล่องออกความคิดเห็นโดยไม่ต้องระปุชื่อ' }
+
     ]
   },
   {
@@ -683,64 +910,62 @@ const members = [
     color: '#f59e0b',
     emoji: '👩‍🎓',
     imgUrl: 'member2.jpg',
-    quote: '""',
+    quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '📋', text: '' },
-      { icon: '🔍', text: '' },
-      { icon: '✨', text: '' }
+      { icon: '', text: 'Satit Got talent' },
+      { icon: '', text: 'ทุกสามารถมาโชว์ความสามารถพิเศษต่างหรือแนะนำความรู้ทางวิชาการได้' }
+
     ]
   },
   {
     id: 3,
     name: 'พัตนภาคิน กลิ่งเเก้วณรงศ์',
-    role: '',
+    role: 'เลขา',
     class: 'ชั้นมัธยมศึกษาปีที่ 5',
     color: '#10b981',
     emoji: '👩‍🎓',
     imgUrl: 'member3.jpg',
-    quote: '""',
+    quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '📚', text: '' },
-      { icon: '🎓', text: '' },
-      { icon: '💡', text: '' }
+      { icon: '', text: 'Star capture' }
+      { icon: '', text: 'เกี่ยวกับกิจกรรมจิตอาสาให้กลุ่มนักเรียนที่สนใจจะทำผลงานไปเข้าพอร์ต' }
     ]
   },
   {
     id: 4,
     name: 'ธีรดนัย ชาวพงศ์',
-    role: '',
+    role: 'เหรัญญิก',
     class: 'ชั้นมัธยมศึกษาปีที่ 5',
     color: '#ec4899',
     emoji: '🧑‍🎓',
     imgUrl: 'member4.jpg',
-    quote: '""',
+    quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '⚽', text: '' },
-      { icon: '🎭', text: '' },
-      { icon: '🏆', text: '' }
+      { icon: '', text: 'Satit Talk ' }
+      { icon: '', text: 'Inspiration จากสายอาชีพต่างๆให้กับทุกคน' }
     ]
   },
   {
     id: 5,
     name: 'ธนกฤต เดชะคำภู',
-    role: '',
+    role: 'กรรมการ',
     class: 'ชั้นมัธยมศึกษาปีที่ 5',
     color: '#8b5cf6',
     emoji: '👨‍🎓',
     imgUrl: 'member5.jpg',
-    quote: '""',
+    quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '💰', text: '' },
-      { icon: '🧼', text: '' },
-      { icon: '🔒', text: '' }
+    { icon: '', text: 'Exam Detax Week' }
+    { icon: '', text: 'เนื่องจาก มีการสอบ Finalเข้ามาทางสภาเราจึงมีนโยบายที่จะเสนอครูให้ช่วงก่อนสัปดาสอบไม่มีการบ้านหรือลดการบ้านลง' }
     ]
   }
 ];
 
 function renderMembers() {
   const grid = document.getElementById('membersGrid');
+  if(!grid) return;
   grid.innerHTML = members.map((m, i) => `
-    <div class="member-card reveal reveal-delay-${(i%4)+1}" onclick="openMemberModal(${m.id})">
+    <div class="member-card reveal reveal-delay-${(i%4)+1}" onclick="openMemberModal(${m.id})" style="--card-glow:${m.color}66">
       <div class="member-img-container">
         ${m.imgUrl ?
           `<img src="${m.imgUrl}" class="member-card-img" alt="${m.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''
@@ -748,12 +973,12 @@ function renderMembers() {
         <div class="member-avatar-placeholder" style="display: ${m.imgUrl ? 'none' : 'flex'}; color: ${m.color}; background: rgba(255,255,255,0.02)">
           ${m.emoji}
         </div>
-        <div class="member-role-badge" style="background: ${m.color}cc;">${m.role}</div>
+        <div class="member-role-badge" style="background: ${m.color}cc;">${m.role || 'กรรมการ'}</div>
       </div>
       <div class="member-body">
         <div class="member-name">${m.name}</div>
         <div class="member-class">${m.class}</div>
-        <div class="member-quote">${m.quote}</div>
+        <div class="member-quote">${m.quote || '—'}</div>
       </div>
     </div>
   `).join('');
@@ -762,31 +987,39 @@ function renderMembers() {
 
 function openMemberModal(id) {
   const m = members.find(x => x.id === id);
+  if(!m) return;
+  const colorGlow = m.color + '33';
   document.getElementById('modalContent').innerHTML = `
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-profile-header">
-      <div class="modal-img-container" style="border-color: ${m.color}88">
-        ${m.imgUrl ?
-          `<img src="${m.imgUrl}" class="modal-profile-img" alt="${m.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''
+    <div class="modal-hero-banner">
+      <div class="modal-hero-banner-bg" style="background: linear-gradient(135deg, ${m.color}22, ${m.color}55)"></div>
+      <div class="modal-hero-banner-overlay"></div>
+      <div class="modal-banner-glow" style="width:300px;height:300px;top:-100px;left:-80px;background:radial-gradient(ellipse,${colorGlow},transparent 70%)"></div>
+      <div class="modal-hero-img-wrap" style="border-color:${m.color}99">
+        ${m.imgUrl
+          ? `<img src="${m.imgUrl}" alt="${m.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+             <div class="modal-hero-img-placeholder" style="display:none">${m.emoji}</div>`
+          : `<div class="modal-hero-img-placeholder">${m.emoji}</div>`
         }
-        <div class="modal-profile-avatar-placeholder" style="display: ${m.imgUrl ? 'none' : 'flex'};">${m.emoji}</div>
-      </div>
-      <div class="modal-header-info">
-        <div class="modal-member-name">${m.name}</div>
-        <div class="modal-member-role" style="background: ${m.color}">${m.role}</div>
-        <div class="modal-member-sub">${m.class}</div>
       </div>
     </div>
-    <div class="modal-section">คติประจำใจ</div>
-    <div class="modal-quote-box">${m.quote}</div>
-    <div class="modal-section">หน้าที่ความรับผิดชอบหลัก</div>
-    <div class="modal-responsibility-list">
-      ${m.responsibilities.map(resp => `
-        <div class="modal-responsibility-item">
-          <span class="modal-resp-icon">${resp.icon}</span>
-          <div class="modal-resp-text">${resp.text}</div>
-        </div>
-      `).join('')}
+    <div class="modal-content">
+      <div class="modal-name-area">
+        <div class="modal-member-name">${m.name}</div>
+        <div class="modal-member-role" style="background:linear-gradient(135deg,${m.color},${m.color}cc)">${m.role || 'คณะกรรมการ'}</div>
+        <div class="modal-member-sub">${m.class}</div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-section">คติประจำใจ</div>
+      <div class="modal-quote-box">${m.quote || 'มุ่งมั่นพัฒนาโรงเรียน เพื่อประโยชน์ส่วนรวมของนักเรียนทุกคน'}</div>
+      <div class="modal-section">หน้าที่ความรับผิดชอบหลัก</div>
+      <div class="modal-responsibility-list">
+        ${m.responsibilities.map(resp => `
+          <div class="modal-responsibility-item">
+            <span class="modal-resp-icon">${resp.icon}</span>
+            <div class="modal-resp-text">${resp.text || '—'}</div>
+          </div>`).join('')}
+      </div>
     </div>
   `;
   document.getElementById('partyModal').classList.add('open');
@@ -809,7 +1042,6 @@ function previewImage(input) {
   const file = input.files[0];
   const preview = document.getElementById('imagePreview');
   const info = document.getElementById('uploadInfo');
-
   if (file) {
     if (file.size > 5 * 1024 * 1024) {
       showToast('⚠️ ขนาดไฟล์รูปภาพห้ามเกิน 5MB ครับ');
@@ -842,7 +1074,6 @@ function submitPetition() {
   const formData = new FormData();
   const payload = {
     username: "ระบบรับเรื่องร้องเรียน สภานักเรียนโรงเรียนสาธิต",
-    avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100",
     embeds: [{
       title: "📝 มีคำร้องเรียน/ข้อเสนอแนะใหม่แจ้งเข้ามา",
       description: detail,
@@ -853,7 +1084,6 @@ function submitPetition() {
   };
 
   formData.append('payload_json', JSON.stringify(payload));
-
   if (fileInput.files.length > 0) {
     formData.append('file', fileInput.files[0]);
   }
@@ -889,10 +1119,9 @@ function resetForm() {
   document.getElementById('uploadInfo').style.display = 'block';
 }
 
-function scrollTo(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  document.querySelector(`.nav-link[onclick="scrollTo('${id}')"]`)?.classList.add('active');
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({ behavior: 'smooth' });
 }
 
 function showToast(msg) {
@@ -904,15 +1133,16 @@ function showToast(msg) {
 
 function initParticles() {
   const wrap = document.getElementById('particles');
-  for (let i = 0; i < 20; i++) {
+  if(!wrap) return;
+  for (let i = 0; i < 15; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
-    const sz = 4 + Math.random() * 20;
+    const sz = 4 + Math.random() * 16;
     p.style.cssText = `
       width: ${sz}px; height: ${sz}px;
       left: ${Math.random() * 100}%;
       animation-duration: ${8 + Math.random() * 12}s;
-      animation-delay: ${Math.random() * 10}s;
+      animation-delay: ${Math.random() * 5}s;
     `;
     wrap.appendChild(p);
   }
@@ -938,25 +1168,89 @@ function observeReveal() {
 
 window.addEventListener('scroll', () => {
   const btn = document.getElementById('scrollTopBtn');
-  if (window.scrollY > 400) btn.classList.add('visible');
-  else btn.classList.remove('visible');
+  if(btn) {
+    if (window.scrollY > 400) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+  }
 });
 
-const sections = ['hero','members','petition'];
+function toggleMenu() {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+function goSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// FIXED TYPING EFFECT
+const typeWords = ['โรงเรียนสาธิต'];
+let wi = 0, ci = 0, isDeleting = false;
+
+function typeEffect() {
+  const el = document.getElementById('typeTarget');
+  if (!el) return;
+  const word = typeWords[wi % typeWords.length];
+
+  if (!isDeleting) {
+    el.textContent = word.substring(0, ci + 1);
+    ci++;
+    if (ci === word.length) {
+      isDeleting = true;
+      setTimeout(typeEffect, 2000);
+      return;
+    }
+  } else {
+    el.textContent = word.substring(0, ci - 1);
+    ci--;
+    if (ci === 0) {
+      isDeleting = false;
+      wi++;
+    }
+  }
+  setTimeout(typeEffect, isDeleting ? 60 : 100);
+}
+
+// FIXED LOADING SCREEN LOGIC
+(function initLoader() {
+  const bar = document.getElementById('loaderBar');
+  let w = 0;
+  const iv = setInterval(() => {
+    w += (99 - w) * 0.15;
+    if(bar) bar.style.width = w + '%';
+    if (w >= 98) { clearInterval(iv); }
+  }, 30);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    initParticles();
+    renderMembers();
+    setTimeout(typeEffect, 400);
+  });
+
+  window.addEventListener('load', () => {
+    clearInterval(iv);
+    if(bar) bar.style.width = '100%';
+    setTimeout(() => {
+      const screen = document.getElementById('loadingScreen');
+      if(screen) screen.classList.add('hidden');
+    }, 300);
+  });
+})();
+
+// HIGHLIGHT ACTIVE NAV ON SCROLL
+const allSections = ['hero','members','petition'];
 window.addEventListener('scroll', () => {
   let cur = '';
-  sections.forEach(id => {
+  allSections.forEach(id => {
     const el = document.getElementById(id);
-    if (el && window.scrollY >= el.offsetTop - 100) cur = id;
+    if (el && window.scrollY >= el.offsetTop - 140) cur = id;
   });
   document.querySelectorAll('.nav-link').forEach(l => {
-    l.classList.toggle('active', l.getAttribute('onclick') === `scrollTo('${cur}')`);
+    const onclickStr = l.getAttribute('onclick') || '';
+    l.classList.toggle('active', onclickStr.includes(`'${cur}'`));
   });
 });
-
-initParticles();
-renderMembers();
-observeReveal();
 </script>
 </body>
 </html>
