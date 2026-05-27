@@ -692,21 +692,6 @@
   .reveal-delay-3 { transition-delay: 0.3s; }
   .reveal-delay-4 { transition-delay: 0.4s; }
 
-  /* LOADING SCREEN */
-  #loadingScreen {
-    position: fixed; inset: 0; z-index: 10000;
-    background: var(--gray-900);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-  }
-  #loadingScreen.hidden { opacity: 0; visibility: hidden; }
-  .loader-logo { width: 80px; height: 80px; margin-bottom: 1.5rem; animation: loaderPulse 1s ease infinite alternate; display: flex; align-items: center; justify-content: center; }
-  .loader-logo-img { width: 100%; height: 100%; object-fit: contain; }
-  @keyframes loaderPulse { from{transform:scale(0.95);opacity:0.8;} to{transform:scale(1.05);opacity:1;} }
-  .loader-text { font-family:'Prompt',sans-serif; font-size:18px; color:var(--white); margin-bottom: 1.5rem; letter-spacing: 0.5px; }
-  .loader-bar-wrap { width: 200px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; }
-  .loader-bar { height: 100%; width: 0%; background: linear-gradient(90deg,var(--sky),#38bdf8); border-radius: 999px; }
-
   /* HAMBURGER */
   .hamburger {
     display: none; flex-direction: column; gap: 5px;
@@ -742,14 +727,6 @@
 </style>
 </head>
 <body>
-
-<div id="loadingScreen">
-  <div class="loader-logo">
-    <img src="imagelogo1.jpg" class="loader-logo-img" alt="โลโก้โรงเรียน">
-  </div>
-  <div class="loader-text">ระบบสภานักเรียน</div>
-  <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
-</div>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
@@ -889,7 +866,7 @@ const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/149675249399077287
 const members = [
   {
     id: 1,
-    name: 'กฤษฎ์ จันทร์หอม',
+    name: 'พรรคเบอร์ 1 — กฤษฎ์ จันทร์หอม',
     role: 'ประธานนักเรียน',
     class: 'ชั้นมัธยมศึกษาปีที่ 5',
     color: '#0ea5e9',
@@ -897,9 +874,8 @@ const members = [
     imgUrl: 'member1.jpg',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '', text: 'Suggestion Box' },
-      { icon: '', text: 'กล่องออกความคิดเห็นโดยไม่ต้องระปุชื่อ' }
-
+      { icon: '📥', text: 'Suggestion Box' },
+      { icon: '💬', text: 'กล่องออกความคิดเห็นโดยไม่ต้องระบุชื่อ' }
     ]
   },
   {
@@ -912,9 +888,8 @@ const members = [
     imgUrl: 'member2.jpg',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '', text: 'Satit Got talent' },
-      { icon: '', text: 'ทุกสามารถมาโชว์ความสามารถพิเศษต่างหรือแนะนำความรู้ทางวิชาการได้' }
-
+      { icon: '📥', text: 'Satit Got talent' },
+      { icon: '💬', text: 'ทุกคนสามารถมาโชว์ความสามารถพิเศษต่าง ๆ หรือแนะนำความรู้ทางวิชาการได้' }
     ]
   },
   {
@@ -927,8 +902,8 @@ const members = [
     imgUrl: 'member3.jpg',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '', text: 'Star capture' }
-      { icon: '', text: 'เกี่ยวกับกิจกรรมจิตอาสาให้กลุ่มนักเรียนที่สนใจจะทำผลงานไปเข้าพอร์ต' }
+      { icon: '📥', text: 'Star capture' },
+      { icon: '💬', text: 'เกี่ยวกับกิจกรรมจิตอาสาให้กลุ่มนักเรียนที่สนใจจะทำผลงานไปเข้าพอร์ต' }
     ]
   },
   {
@@ -941,8 +916,8 @@ const members = [
     imgUrl: 'member4.jpg',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-      { icon: '', text: 'Satit Talk ' }
-      { icon: '', text: 'Inspiration จากสายอาชีพต่างๆให้กับทุกคน' }
+      { icon: '📥️', text: 'Satit Talk' },
+      { icon: '💬', text: 'Inspiration จากสายอาชีพต่าง ๆ ให้กับทุกคน' }
     ]
   },
   {
@@ -955,8 +930,8 @@ const members = [
     imgUrl: 'member5.jpg',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
-    { icon: '', text: 'Exam Detax Week' }
-    { icon: '', text: 'เนื่องจาก มีการสอบ Finalเข้ามาทางสภาเราจึงมีนโยบายที่จะเสนอครูให้ช่วงก่อนสัปดาสอบไม่มีการบ้านหรือลดการบ้านลง' }
+      { icon: '📥', text: 'Exam Detax Week' },
+      { icon: '💬', text: 'เนื่องจากมีการสอบ Final เข้ามา ทางสภาเราจึงมีนโยบายที่จะเสนอครูให้ช่วงก่อนสัปดาห์สอบไม่มีการบ้านหรือลดการบ้านลง' }
     ]
   }
 ];
@@ -1212,31 +1187,12 @@ function typeEffect() {
   setTimeout(typeEffect, isDeleting ? 60 : 100);
 }
 
-// FIXED LOADING SCREEN LOGIC
-(function initLoader() {
-  const bar = document.getElementById('loaderBar');
-  let w = 0;
-  const iv = setInterval(() => {
-    w += (99 - w) * 0.15;
-    if(bar) bar.style.width = w + '%';
-    if (w >= 98) { clearInterval(iv); }
-  }, 30);
-
-  window.addEventListener('DOMContentLoaded', () => {
-    initParticles();
-    renderMembers();
-    setTimeout(typeEffect, 400);
-  });
-
-  window.addEventListener('load', () => {
-    clearInterval(iv);
-    if(bar) bar.style.width = '100%';
-    setTimeout(() => {
-      const screen = document.getElementById('loadingScreen');
-      if(screen) screen.classList.add('hidden');
-    }, 300);
-  });
-})();
+// DIRECT INITIALIZATION WITHOUT LOADING SCREEN
+window.addEventListener('DOMContentLoaded', () => {
+  initParticles();
+  renderMembers();
+  setTimeout(typeEffect, 400);
+});
 
 // HIGHLIGHT ACTIVE NAV ON SCROLL
 const allSections = ['hero','members','petition'];
