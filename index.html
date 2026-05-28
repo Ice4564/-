@@ -325,17 +325,31 @@
   .member-card:hover .member-card-inner { transform: rotateY(180deg); }
 
   /* FRONT */
-  .member-card-front, .member-card-back {
-    position: absolute; inset: 0;
-    border-radius: 24px;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    overflow: hidden;
-  }
-  .member-card-front {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-  }
+.member-card-front, .member-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* เพิ่มบรรทัดนี้ */
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* เพิ่ม 2 คลาสนี้ต่อท้าย เพื่อบังคับให้บนมือถือหันหน้ามาตรงๆ ไม่สลับด้าน */
+.member-card-front {
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+  z-index: 2;
+
+  .member-card-back {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  z-index: 1;
+}
+
+}
   .member-card-front::after {
     content: '';
     position: absolute; inset: 0; border-radius: 24px;
@@ -1140,7 +1154,7 @@
   <div>
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
-      ปีการศึกษา 2569 ·
+      ปีการศึกษา 2568 ·
     </div>
     <h1 class="hero-title">สภานักเรียน<br><span id="typeTarget"></span><span class="type-cursor" id="typeCursor"></span></h1>
     <p class="hero-subtitle"><br></p>
@@ -1275,7 +1289,7 @@
     <img src="imagelogo1.jpg" class="footer-logo-img" alt="โลโก้">
     สภานักเรียน
   </div>
-  <div class="footer-desc">โรงเรียนสาธิต · ปีการศึกษา 2569</div>
+  <div class="footer-desc">โรงเรียนสาธิต · ปีการศึกษา 2568</div>
   <div class="footer-links">
     <span class="footer-link" onclick="scrollToSection('hero')">หน้าแรก</span>
     <span class="footer-link" onclick="scrollToSection('members')">คณะกรรมการ</span>
@@ -1285,7 +1299,7 @@
       Instagram
     </a>
   </div>
-  <div class="footer-copy">© 2569 สภานักเรียนโรงเรียนสาธิต สงวนลิขสิทธิ์</div>
+  <div class="footer-copy">© 2568 สภานักเรียนโรงเรียนสาธิต สงวนลิขสิทธิ์</div>
 </footer>
 
 <div class="modal-overlay" id="partyModal">
@@ -1726,8 +1740,10 @@ document.addEventListener('click', function(e) {
   const card = e.target.closest('.member-card');
   if (!card) return;
   if (window.matchMedia('(hover: none)').matches) {
-    // don't flip if clicking detail btn
+    // ถ้ากดโดนปุ่ม IG หรือปุ่มดูรายละเอียด ไม่ต้องพลิกการ์ดกลับ
     if (e.target.closest('.member-detail-btn') || e.target.closest('.member-ig-link')) return;
+
+    // พลิกการ์ด
     card.classList.toggle('flipped');
   }
 });
