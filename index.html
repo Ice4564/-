@@ -94,6 +94,9 @@
     pointer-events: none;
   }
 
+
+
+
   /* NAVBAR */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -300,77 +303,193 @@
     justify-content: center;
   }
 
+  /* ===== MEMBER FLIP CARD ===== */
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
   .member-card {
+    perspective: 1000px;
+    cursor: pointer;
+    height: 520px;
+    position: relative;
+  }
+  .member-card-inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    border-radius: 24px;
+  }
+  .member-card:hover .member-card-inner { transform: rotateY(180deg); }
+
+  /* FRONT */
+  .member-card-front, .member-card-back {
+    position: absolute; inset: 0;
+    border-radius: 24px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+  }
+  .member-card-front {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px; padding: 0;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(.34,1.56,.64,1);
-    position: relative;
-    text-align: center;
   }
-  .member-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(255,255,255,0.18);
-    box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+  .member-card-front::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: 24px;
+    box-shadow: inset 0 0 0 1px var(--card-glow, rgba(14,165,233,0.2));
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
   }
 
   .member-img-container {
-    width: 100%;
-    height: 420px;
-    background: #1e293b;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%; height: 340px;
+    background: #0f172a;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
   }
-
+  .member-img-container::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+    background: linear-gradient(to top, rgba(10,10,20,0.95), transparent);
+    pointer-events: none;
+  }
   .member-card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top;
+    transition: transform 0.6s ease;
   }
-  .member-card:hover .member-card-img {
-    transform: scale(1.08);
-  }
-
   .member-avatar-placeholder {
-    font-size: 5rem;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+    font-size: 6rem; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.3));
   }
-
   .member-role-badge {
-    position: absolute; bottom: 12px; left: 12px;
-    padding: 4px 12px; border-radius: 8px;
-    font-size: 12px; font-weight: 600;
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+    padding: 5px 16px; border-radius: 999px;
+    font-size: 12px; font-weight: 700;
     color: var(--white);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    white-space: nowrap; z-index: 2;
   }
-
-  .member-body { padding: 1.25rem; }
+  .member-body {
+    padding: 1rem 1.25rem 1.25rem;
+    background: linear-gradient(to bottom, rgba(10,10,20,0.97), #0a0f1a);
+  }
   .member-name {
     font-family: 'Prompt', sans-serif;
-    font-size: 16px; font-weight: 700;
-    color: var(--white); margin-bottom: 4px;
+    font-size: 15px; font-weight: 700;
+    color: var(--white); margin-bottom: 2px;
+    line-height: 1.3;
   }
-  .member-class {
-    font-size: 13px; color: var(--gray-400);
-    margin-bottom: 0.75rem;
+  .member-class { font-size: 12px; color: var(--gray-400); margin-bottom: 0; }
+  .member-quote { display: none; }
+
+  /* hover hint */
+  .member-flip-hint {
+    position: absolute; bottom: 8px; right: 12px;
+    font-size: 10px; color: rgba(255,255,255,0.3);
+    display: flex; align-items: center; gap: 4px;
+    letter-spacing: 0.5px;
   }
-  .member-quote {
-    font-size: 12px; color: var(--gray-400);
-    font-style: italic; line-height: 1.5;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding-top: 10px;
+
+  /* BACK */
+  .member-card-back {
+    transform: rotateY(180deg);
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+    overflow: hidden;
+  }
+  .member-back-banner {
+    height: 80px; position: relative; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .member-back-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--card-glow, rgba(14,165,233,0.4)), rgba(3,105,161,0.6));
+    filter: blur(0px);
+  }
+  .member-back-banner::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .member-back-emoji {
+    font-size: 2.5rem; position: relative; z-index: 1;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  }
+  .member-back-body {
+    flex: 1; padding: 1.25rem;
+    background: linear-gradient(160deg, #0c1929, #080e18);
+    display: flex; flex-direction: column; gap: 10px;
+    overflow: hidden;
+  }
+  .member-back-name {
+    font-family: 'Prompt', sans-serif;
+    font-size: 16px; font-weight: 800;
+    color: var(--white); text-align: center;
+    line-height: 1.3; margin-bottom: 2px;
+  }
+  .member-back-role {
+    display: inline-block; margin: 0 auto 6px;
+    padding: 4px 14px; border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+    color: var(--white);
+    text-align: center;
+  }
+  .member-back-quote {
+    font-size: 12px; color: rgba(200,220,255,0.7);
+    font-style: italic; text-align: center;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    border-left: 2px solid var(--card-glow, rgba(14,165,233,0.5));
+    line-height: 1.5;
+  }
+  .member-back-resp {
+    display: flex; flex-direction: column; gap: 7px; flex: 1;
+  }
+  .member-back-resp-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px; padding: 8px 12px;
+    font-size: 12px; color: #cbd5e1; line-height: 1.4;
+  }
+  .member-back-resp-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .member-back-footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(0,0,0,0.3);
+  }
+  .member-ig-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 999px;
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: var(--white); font-size: 12px; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+    border: none; cursor: pointer;
+  }
+  .member-ig-link:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(253,29,29,0.3); }
+  .member-detail-btn {
+    padding: 6px 14px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent; color: rgba(255,255,255,0.7);
+    font-size: 12px; cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    transition: all 0.2s;
+  }
+  .member-detail-btn:hover {
+    background: rgba(255,255,255,0.1); color: var(--white);
   }
 
   /* MODAL */
@@ -533,6 +652,23 @@
   .modal-resp-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
   .modal-resp-text { font-size: 14px; color: #cbd5e1; line-height: 1.5; font-weight: 500; }
 
+  .modal-ig-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 18px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(131,58,180,0.15), rgba(253,29,29,0.15), rgba(252,176,69,0.15));
+    border: 1px solid rgba(253,29,29,0.25);
+    color: var(--white); text-decoration: none;
+    font-size: 14px; font-weight: 600;
+    transition: all 0.3s;
+    margin-top: 2px;
+  }
+  .modal-ig-btn:hover {
+    background: linear-gradient(135deg, rgba(131,58,180,0.3), rgba(253,29,29,0.3), rgba(252,176,69,0.3));
+    border-color: rgba(253,29,29,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(253,29,29,0.2);
+  }
+
   @media(max-width:600px) {
     .modal-responsibility-list { grid-template-columns: 1fr; }
     .modal-member-name { font-size: 22px; }
@@ -650,6 +786,16 @@
   .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
   .footer-link { font-size: 13px; color: var(--gray-400); cursor: pointer; transition: color 0.2s; }
   .footer-link:hover { color: var(--sky); }
+
+  .footer-ig {
+    display: inline-flex; align-items: center;
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none !important;
+  }
+  .footer-ig svg { fill: #fd1d1d; flex-shrink: 0; }
+  .footer-ig:hover { opacity: 0.8; }
   .footer-copy { margin-top: 2rem; font-size: 12px; color: var(--gray-600); }
 
   /* TOAST */
@@ -719,15 +865,245 @@
 
   .member-card:hover { box-shadow: 0 0 0 1px var(--card-glow, rgba(14,165,233,0.4)), 0 24px 48px rgba(0,0,0,0.5); }
 
-  @media (max-width: 768px) {
-    .hamburger { display:flex; }
-    nav .nav-links { display:none; }
-    .mobile-menu .nav-link { display: block; width: 100%; }
+  /* ── MOBILE & TABLET ── */
+  @media (max-width: 900px) {
+    .members-grid { grid-template-columns: repeat(2, 1fr); }
   }
+  @media (max-width: 768px) {
+    .hamburger { display: flex; }
+    nav .nav-links { display: none; }
+    .mobile-menu .nav-link { display: block; width: 100%; }
+    /* hero */
+    #hero { padding: 7rem 1.25rem 4rem !important; }
+    .hero-title { font-size: clamp(2.2rem, 10vw, 3.5rem) !important; letter-spacing: 0px; }
+    .hero-subtitle { font-size: 1rem !important; }
+    .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
+    .btn-primary, .btn-secondary { width: 100%; max-width: 320px; justify-content: center; padding: 14px 24px !important; font-size: 15px !important; }
+    /* members */
+    .members-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .member-card { height: 440px; }
+    .member-img-container { height: 270px; }
+    .member-back-banner { height: 60px; }
+    /* countdown */
+    .countdown-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+    /* modal */
+    .modal-box { border-radius: 20px; margin: 0.5rem; }
+    .modal-hero-banner { height: 150px !important; }
+    .modal-responsibility-list { grid-template-columns: 1fr !important; }
+    .modal-member-name { font-size: 20px !important; }
+    /* petition */
+    #petition { padding: 4rem 1.25rem; }
+    /* footer */
+    .footer-links { flex-direction: column; align-items: center; gap: 12px; }
+  }
+  @media (max-width: 480px) {
+    .members-grid { grid-template-columns: 1fr; max-width: 340px; margin: 0 auto; }
+    .member-card { height: 480px; }
+    .member-img-container { height: 310px; }
+    .countdown-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .hero-glow, .hero-glow-2, .hero-glow-3 { display: none; }
+  }
+  /* disable flip on touch — ใช้ click แทน */
+  @media (hover: none) {
+    .member-card-inner { transition: transform 0.5s ease; }
+    .member-card:hover .member-card-inner { transform: none; }
+    .member-card.flipped .member-card-inner { transform: rotateY(180deg); }
+    .member-flip-hint { font-size: 11px; opacity: 0.5; }
+  }
+
+  /* ══════════════════════════════════════════
+     COUNTDOWN — FULL REDESIGN
+  ══════════════════════════════════════════ */
+  #countdown {
+    padding: 5rem 2rem 6rem;
+    position: relative; z-index: 1;
+    overflow: hidden;
+  }
+  .cd-section-wrap {
+    max-width: 960px; margin: 0 auto;
+    background: linear-gradient(135deg, rgba(14,165,233,0.06) 0%, rgba(3,105,161,0.08) 50%, rgba(14,165,233,0.04) 100%);
+    border: 1px solid rgba(14,165,233,0.2);
+    border-radius: 32px;
+    padding: 3.5rem 2.5rem 3rem;
+    position: relative; overflow: hidden;
+    box-shadow: 0 0 80px rgba(14,165,233,0.07), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  /* grid pattern inside card */
+  .cd-section-wrap::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 32px;
+    background-image:
+      linear-gradient(rgba(14,165,233,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,165,233,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  /* glow top-left */
+  .cd-section-wrap::after {
+    content: '';
+    position: absolute; top: -80px; left: -80px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(14,165,233,0.12), transparent 65%);
+    pointer-events: none;
+  }
+  .cd-glow-right {
+    position: absolute; bottom: -60px; right: -60px;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(56,189,248,0.1), transparent 65%);
+    pointer-events: none;
+  }
+
+  /* header */
+  .cd-header { text-align: center; margin-bottom: 2.75rem; position: relative; z-index: 1; }
+  .cd-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(14,165,233,0.1);
+    border: 1px solid rgba(14,165,233,0.25);
+    border-radius: 999px; padding: 5px 18px;
+    font-size: 11px; font-weight: 700; color: var(--sky);
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .cd-eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sky); animation: pulse 1.4s ease infinite; box-shadow: 0 0 8px var(--sky); }
+  .cd-main-title {
+    font-family: 'Prompt', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800; color: var(--white);
+    line-height: 1.2; margin-bottom: 0.5rem;
+  }
+  .cd-main-title span {
+    background: linear-gradient(135deg, #38bdf8, var(--sky));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .cd-sub { font-size: 14px; color: var(--gray-400); }
+
+  /* divider */
+  .cd-divider {
+    display: flex; align-items: center; gap: 12px; margin: 0 0 2.5rem;
+    position: relative; z-index: 1;
+  }
+  .cd-divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(14,165,233,0.3), transparent); }
+  .cd-divider-icon { font-size: 1.3rem; }
+
+  /* countdown boxes */
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 2.5rem;
+    position: relative; z-index: 1;
+  }
+  .countdown-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(14,165,233,0.15);
+    border-radius: 22px;
+    padding: 2rem 1rem 1.5rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+    transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .countdown-box::before {
+    content: '';
+    position: absolute; top: 0; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sky), transparent);
+    border-radius: 999px;
+  }
+  .countdown-box::after {
+    content: '';
+    position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+    width: 100px; height: 60px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(14,165,233,0.1), transparent 70%);
+  }
+  .countdown-box:hover {
+    border-color: rgba(14,165,233,0.4);
+    background: rgba(14,165,233,0.06);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(14,165,233,0.15);
+  }
+  .cd-box-icon { font-size: 1.4rem; margin-bottom: 0.5rem; opacity: 0.7; }
+  .countdown-num {
+    font-family: 'Prompt', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 4.5rem);
+    font-weight: 800; line-height: 1;
+    background: linear-gradient(160deg, #ffffff 0%, #7dd3fc 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(14,165,233,0.3));
+    transition: transform 0.2s cubic-bezier(.34,1.56,.64,1);
+  }
+  .countdown-box.tick .countdown-num {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 30px rgba(14,165,233,0.6));
+  }
+  .countdown-unit {
+    font-size: 11px; font-weight: 700; color: var(--sky);
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-top: 10px;
+  }
+
+  /* colon separators */
+  .cd-colon {
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Prompt', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    color: rgba(14,165,233,0.4);
+    animation: blink 1s step-end infinite;
+    padding-bottom: 1.5rem;
+  }
+
+  /* bottom info bar */
+  .cd-info-bar {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 16px;
+    position: relative; z-index: 1;
+  }
+  .cd-date-chip {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(14,165,233,0.08);
+    border: 1px solid rgba(14,165,233,0.2);
+    border-radius: 999px; padding: 10px 22px;
+    font-size: 14px; color: var(--white);
+    font-weight: 500;
+  }
+  .cd-live-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 10px #10b981, 0 0 20px rgba(16,185,129,0.4);
+    animation: pulse 1.5s ease infinite; flex-shrink: 0;
+  }
+  .cd-location-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 999px; padding: 10px 22px;
+    font-size: 14px; color: var(--gray-400);
+  }
+  .countdown-done {
+    font-family: 'Prompt', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--sky), #38bdf8);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center; padding: 3rem 0;
+  }
+
+  @media(max-width:768px) {
+    .cd-section-wrap { padding: 2.5rem 1.25rem 2rem; border-radius: 24px; }
+    .countdown-grid { grid-template-columns: repeat(2,1fr) !important; gap: 12px; }
+    .cd-colon { display: none; }
+    .cd-info-bar { flex-direction: column; gap: 10px; }
+  }
+  @media(max-width:480px) {
+    .countdown-num { font-size: 2.5rem !important; }
+    .countdown-box { padding: 1.5rem 0.75rem 1.25rem; border-radius: 16px; }
+  }
+
 </style>
 </head>
 <body>
-
+</div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div id="particles"></div>
@@ -742,6 +1118,7 @@
   <div class="nav-links">
     <button class="nav-link active" onclick="scrollToSection('hero')">หน้าแรก</button>
     <button class="nav-link" onclick="scrollToSection('members')">คณะกรรมการ</button>
+    <button class="nav-link" onclick="scrollToSection('countdown')">เลือกตั้ง</button>
     <button class="nav-link" onclick="scrollToSection('petition')">ส่งคำร้อง</button>
   </div>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="เมนู">
@@ -752,6 +1129,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <button class="nav-link" onclick="scrollToSection('hero');toggleMenu()">หน้าแรก</button>
   <button class="nav-link" onclick="scrollToSection('members');toggleMenu()">คณะกรรมการ</button>
+  <button class="nav-link" onclick="scrollToSection('countdown');toggleMenu()">เลือกตั้ง</button>
   <button class="nav-link" onclick="scrollToSection('petition');toggleMenu()">ส่งคำร้อง</button>
 </div>
 
@@ -795,6 +1173,60 @@
     <path d="M0,20 C480,60 960,0 1440,40 L1440,60 L0,60 Z" fill="rgba(14,165,233,0.04)"/>
   </svg>
 </div>
+
+<section id="countdown">
+  <div class="cd-section-wrap">
+    <div class="cd-glow-right"></div>
+
+    <div class="cd-header">
+      <div class="cd-eyebrow">
+        <span class="cd-eyebrow-dot"></span>
+        การเลือกตั้งสภานักเรียน
+      </div>
+      <div class="cd-main-title">🗳️ นับถอยหลัง<br><span>วันเลือกตั้งสภานักเรียน</span></div>
+      <div class="cd-sub">โรงเรียนสาธิต · ปีการศึกษา 2569</div>
+    </div>
+
+    <div class="cd-divider">
+      <div class="cd-divider-line"></div>
+      <span class="cd-divider-icon">🏫</span>
+      <div class="cd-divider-line"></div>
+    </div>
+
+    <div class="countdown-grid" id="countdownGrid">
+      <div class="countdown-box" id="cd-days">
+        <div class="cd-box-icon">📅</div>
+        <span class="countdown-num" id="cd-d">--</span>
+        <div class="countdown-unit">วัน</div>
+      </div>
+      <div class="countdown-box" id="cd-hours">
+        <div class="cd-box-icon">🕐</div>
+        <span class="countdown-num" id="cd-h">--</span>
+        <div class="countdown-unit">ชั่วโมง</div>
+      </div>
+      <div class="countdown-box" id="cd-mins">
+        <div class="cd-box-icon">⏱️</div>
+        <span class="countdown-num" id="cd-m">--</span>
+        <div class="countdown-unit">นาที</div>
+      </div>
+      <div class="countdown-box" id="cd-secs">
+        <div class="cd-box-icon">⚡</div>
+        <span class="countdown-num" id="cd-s">--</span>
+        <div class="countdown-unit">วินาที</div>
+      </div>
+    </div>
+
+    <div class="cd-info-bar">
+      <div class="cd-date-chip">
+        <span class="cd-live-dot"></span>
+        วันศุกร์ที่ 5 มิถุนายน 2569
+      </div>
+      <div class="cd-location-chip">
+        📍 โรงเรียนสาธิต
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="petition">
   <div class="section-header reveal">
@@ -848,6 +1280,10 @@
     <span class="footer-link" onclick="scrollToSection('hero')">หน้าแรก</span>
     <span class="footer-link" onclick="scrollToSection('members')">คณะกรรมการ</span>
     <span class="footer-link" onclick="scrollToSection('petition')">ส่งคำร้อง</span>
+    <a class="footer-link footer-ig" href="https://www.instagram.com/sky._.abc/" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:4px"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Instagram
+    </a>
   </div>
   <div class="footer-copy">© 2568 สภานักเรียนโรงเรียนสาธิต สงวนลิขสิทธิ์</div>
 </footer>
@@ -872,6 +1308,7 @@ const members = [
     color: '#0ea5e9',
     emoji: '👨‍🎓',
     imgUrl: 'member1.jpg',
+    instagram: 'sumosza',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
       { icon: '📥', text: 'Suggestion Box' },
@@ -886,6 +1323,7 @@ const members = [
     color: '#f59e0b',
     emoji: '👩‍🎓',
     imgUrl: 'member2.jpg',
+    instagram: 'k_.bell',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
       { icon: '📥', text: 'Satit Got talent' },
@@ -900,6 +1338,7 @@ const members = [
     color: '#10b981',
     emoji: '👩‍🎓',
     imgUrl: 'member3.jpg',
+    instagram: 'swaggy_knox',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
       { icon: '📥', text: 'Star capture' },
@@ -914,6 +1353,7 @@ const members = [
     color: '#ec4899',
     emoji: '🧑‍🎓',
     imgUrl: 'member4.jpg',
+    instagram: 'peemt33ra.9',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
       { icon: '📥️', text: 'Satit Talk' },
@@ -928,6 +1368,7 @@ const members = [
     color: '#8b5cf6',
     emoji: '👨‍🎓',
     imgUrl: 'member5.jpg',
+    instagram: 'sky._.abc',
     quote: 'ปัญหามีไว้ให้ครูเเก้',
     responsibilities: [
       { icon: '📥', text: 'Exam Detax Week' },
@@ -940,20 +1381,61 @@ function renderMembers() {
   const grid = document.getElementById('membersGrid');
   if(!grid) return;
   grid.innerHTML = members.map((m, i) => `
-    <div class="member-card reveal reveal-delay-${(i%4)+1}" onclick="openMemberModal(${m.id})" style="--card-glow:${m.color}66">
-      <div class="member-img-container">
-        ${m.imgUrl ?
-          `<img src="${m.imgUrl}" class="member-card-img" alt="${m.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''
-        }
-        <div class="member-avatar-placeholder" style="display: ${m.imgUrl ? 'none' : 'flex'}; color: ${m.color}; background: rgba(255,255,255,0.02)">
-          ${m.emoji}
+    <div class="member-card reveal reveal-delay-${(i%4)+1}" style="--card-glow:${m.color}">
+      <div class="member-card-inner">
+
+        <!-- FRONT -->
+        <div class="member-card-front">
+          <div class="member-img-container">
+            ${m.imgUrl
+              ? `<img src="${m.imgUrl}" class="member-card-img" alt="${m.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">`
+              : ''
+            }
+            <div class="member-avatar-placeholder" style="display:${m.imgUrl?'none':'flex'};color:${m.color}">
+              ${m.emoji}
+            </div>
+            <div class="member-role-badge" style="background:linear-gradient(135deg,${m.color},${m.color}bb)">${m.role||'กรรมการ'}</div>
+          </div>
+          <div class="member-body">
+            <div class="member-name">${m.name}</div>
+            <div class="member-class">${m.class}</div>
+          </div>
+          <div class="member-flip-hint">hover เพื่อดูข้อมูล ↻</div>
         </div>
-        <div class="member-role-badge" style="background: ${m.color}cc;">${m.role || 'กรรมการ'}</div>
-      </div>
-      <div class="member-body">
-        <div class="member-name">${m.name}</div>
-        <div class="member-class">${m.class}</div>
-        <div class="member-quote">${m.quote || '—'}</div>
+
+        <!-- BACK -->
+        <div class="member-card-back" style="background:linear-gradient(160deg,#0c1929,#080e18)">
+          <div class="member-back-banner" style="--card-glow:${m.color}88">
+            <span class="member-back-emoji">${m.emoji}</span>
+          </div>
+          <div class="member-back-body">
+            <div>
+              <div class="member-back-name">${m.name}</div>
+              <div style="text-align:center">
+                <span class="member-back-role" style="background:linear-gradient(135deg,${m.color},${m.color}cc)">${m.role||'กรรมการ'}</span>
+              </div>
+            </div>
+            <div class="member-back-quote">"${m.quote||'—'}"</div>
+            <div class="member-back-resp">
+              ${m.responsibilities.map(r=>`
+                <div class="member-back-resp-item">
+                  <span class="member-back-resp-icon">${r.icon}</span>
+                  <span>${r.text}</span>
+                </div>`).join('')}
+            </div>
+          </div>
+          <div class="member-back-footer">
+            ${m.instagram
+              ? `<a class="member-ig-link" href="https://instagram.com/${m.instagram}" target="_blank" onclick="event.stopPropagation()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  @${m.instagram}
+                </a>`
+              : '<span></span>'
+            }
+            <button class="member-detail-btn" onclick="openMemberModal(${m.id})">ดูโปรไฟล์ →</button>
+          </div>
+        </div>
+
       </div>
     </div>
   `).join('');
@@ -995,6 +1477,15 @@ function openMemberModal(id) {
             <div class="modal-resp-text">${resp.text || '—'}</div>
           </div>`).join('')}
       </div>
+
+      ${m.instagram ? `
+      <div class="modal-section">ติดตามบน Instagram</div>
+      <a href="https://instagram.com/${m.instagram}" target="_blank" class="modal-ig-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        @${m.instagram}
+        <span style="margin-left:auto;font-size:11px;opacity:0.7">เปิดใน Instagram →</span>
+      </a>
+      ` : ''}
     </div>
   `;
   document.getElementById('partyModal').classList.add('open');
@@ -1189,7 +1680,59 @@ function typeEffect() {
 
 // DIRECT INITIALIZATION WITHOUT LOADING SCREEN
 window.addEventListener('DOMContentLoaded', () => {
-  initParticles();
+
+// COUNTDOWN TIMER
+(function() {
+  // วันเลือกตั้ง 5 มิ.ย. 2569 → ค.ศ. 2026
+  const target = new Date('2026-06-05T08:00:00+07:00').getTime();
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick(elId, boxId, val) {
+    const el = document.getElementById(elId);
+    const box = document.getElementById(boxId);
+    if (!el || !box) return;
+    const newVal = pad(val);
+    if (el.textContent !== newVal) {
+      el.textContent = newVal;
+      box.classList.add('tick');
+      setTimeout(() => box.classList.remove('tick'), 200);
+    }
+  }
+
+  function update() {
+    const now = Date.now();
+    const diff = target - now;
+    if (diff <= 0) {
+      const grid = document.getElementById('countdownGrid');
+      if (grid) grid.innerHTML = '<div class="countdown-done">🗳️ วันนี้คือวันเลือกตั้ง!</div>';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    tick('cd-d', 'cd-days',  d);
+    tick('cd-h', 'cd-hours', h);
+    tick('cd-m', 'cd-mins',  m);
+    tick('cd-s', 'cd-secs',  s);
+  }
+
+  update();
+  setInterval(update, 1000);
+})();
+
+// TOUCH FLIP for mobile
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.member-card');
+  if (!card) return;
+  if (window.matchMedia('(hover: none)').matches) {
+    // don't flip if clicking detail btn
+    if (e.target.closest('.member-detail-btn') || e.target.closest('.member-ig-link')) return;
+    card.classList.toggle('flipped');
+  }
+});
+
+initParticles();
   renderMembers();
   setTimeout(typeEffect, 400);
 });
